@@ -1,0 +1,1 @@
+web: ./build/install/com.fiverules.five-rules-server/bin/com.fiverules.five-rules-server
