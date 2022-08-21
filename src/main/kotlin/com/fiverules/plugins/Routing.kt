@@ -1,14 +1,15 @@
 package com.fiverules.plugins
 
 import com.fiverules.features.feed.feedRouting
-import com.fiverules.features.login.loginRouting
-import com.fiverules.features.registration.registerRouting
+import com.fiverules.features.authentication.authRouting
 import com.fiverules.features.rules.rulesRouting
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 
 private const val API_V1 = "/api/v1"
+
 
 fun Application.configureRouting() {
 
@@ -19,10 +20,11 @@ fun Application.configureRouting() {
 
 fun Route.v1Routing() {
     route(API_V1) {
-        registerRouting()
-        loginRouting()
-        rulesRouting()
-        feedRouting()
+        authRouting()
+        authenticate(AUTH_CONFIG) {
+            rulesRouting()
+            feedRouting()
+        }
 
         // for test
         get {

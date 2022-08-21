@@ -1,15 +1,18 @@
 package com.fiverules.features.feed
 
-import io.ktor.application.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 fun Route.feedRouting() {
 
+    val feedInteractor: FeedInteractor by inject()
+
     post("/create/feed") {
-        FeedInteractor.createFeed(call)
+        feedInteractor.createFeed(call)
     }
 
     get("/feeds") {
-        FeedInteractor.getAllFeeds(call)
+        feedInteractor.getAllFeeds(call)
     }
 }

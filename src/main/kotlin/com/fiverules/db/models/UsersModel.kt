@@ -1,5 +1,6 @@
 package com.fiverules.db.models
 
+import com.fiverules.db.models.Users.nullable
 import com.fiverules.models.UserDTO
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
@@ -9,88 +10,77 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
-class User(id: EntityID<Long>) :  Entity<Long>(id) {
+class User(id: EntityID<Long>) : Entity<Long>(id) {
     companion object : EntityClass<Long, User>(Users)
 
     var login by Users.login
     var password by Users.password
+    var phoneNumber by Users.phoneNumber
     var name by Users.name
     var email by Users.email
     var avatar by Users.avatar
     var rating by Users.rating
-    var token by Users.token
+    var isBlocked by Users.isBlocked
 }
 
 object Users : LongIdTable("users") {
-    val login = varchar("login", 25)
-    val password = varchar("password", 25)
-    val name = varchar("name", 25)
-    val email = varchar("email", 50)
+    val login = varchar("login", 25).nullable()
+    val password = varchar("password", 25).nullable()
+    val phoneNumber = varchar("phoneNumber", 20).nullable()
+    val name = varchar("name", 25).nullable()
+    val email = varchar("email", 50).nullable()
     val avatar = varchar("avatar", 300).nullable()
     val rating = integer("rating")
-    val token = varchar("token", 50) // JWT?
+    val isBlocked = bool("isBlocked").default(false)
 
     fun insert(user: UserDTO) {
         transaction {
             Users.insert {
                 it[login] = user.login
+                it[phoneNumber] = user.phoneNumber
                 it[password] = user.password
                 it[name] = user.name
                 it[email] = user.email
                 it[avatar] = user.avatar
                 it[rating] = user.rating
-                it[token] = user.token
+                it[isBlocked] = user.isBlocked
             }
         }
     }
 
     fun getUser(userId: Long): UserDTO? {
-        return transaction{
-            val userModel = User.findById(userId)
-            if(userModel != null){
-                UserDTO(
-                    id = userModel.id.value,
-                    login = userModel.login,
-                    password = userModel.password,
-                    name = userModel.name,
-                    email = userModel.email,
-                    avatar = userModel.avatar,
-                    rating = userModel.rating,
-                    token = userModel.token,
-                )
-            } else {
-                null
-            }
-        }
-    }
-
-    fun updateUserToken(token: String) {
-        transaction {
-            Users.update {
-                it[Users.token] = token
-            }
+        return transaction {
+            User.findById(userId)?.mapToDTO()
         }
     }
 
     fun getUserByLogin(userLogin: String): UserDTO? {
         return transaction {
-            val userModel = User.find { login eq userLogin }.firstOrNull()
-            if (userModel != null) {
-                UserDTO(
-                    id = userModel.id.value,
-                    login = userModel.login,
-                    password = userModel.password,
-                    name = userModel.name,
-                    email = userModel.email,
-                    avatar = userModel.avatar,
-                    rating = userModel.rating,
-                    token = userModel.token,
-                )
-            } else {
-                null
-            }
+            User.find { login eq userLogin }.firstOrNull()?.mapToDTO()
         }
     }
 
-    fun isUserExist(login: String) : Boolean = getUserByLogin(login) != null
+    fun getUserByPhone(userPhone: String): UserDTO? {
+        return transaction {
+            User.find { phoneNumber eq userPhone }.firstOrNull()?.mapToDTO()
+        }
+    }
+
+    fun isLoginExist(login: String): Boolean = getUserByLogin(login) != null
+
+    fun isPhoneExist(phone: String): Boolean = getUserByPhone(phone) != null
+
+    private fun User.mapToDTO(): UserDTO {
+        return UserDTO(
+            id = id.value,
+            login = login,
+            password = password,
+            phoneNumber = phoneNumber,
+            name = name,
+            email = email,
+            avatar = avatar,
+            rating = rating,
+            isBlocked = isBlocked,
+        )
+    }
 }

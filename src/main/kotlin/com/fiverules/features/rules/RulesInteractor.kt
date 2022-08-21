@@ -5,14 +5,14 @@ import com.fiverules.db.models.Rules
 import com.fiverules.db.models.Tasks
 import com.fiverules.models.RuleDTO
 import com.fiverules.models.TaskDTO
-import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.transactions.transaction
 
-object RulesInteractor {
+class RulesInteractor {
 
     suspend fun createNewRule(call: ApplicationCall) {
         val ruleData = call.receive<CreateRuleReceiveData>()

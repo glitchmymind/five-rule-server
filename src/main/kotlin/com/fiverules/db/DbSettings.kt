@@ -1,5 +1,6 @@
 package com.fiverules.db
 
+import com.fiverules.config.GlobalConfig
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
@@ -36,9 +37,9 @@ object DbSettings {
 
     private fun postgresSource(): DataSource {
         val config = HikariConfig()
-        config.jdbcUrl = System.getenv("DB_URL")
-        config.username = System.getenv("USER_NAME")
-        config.password = System.getenv("PASSWORD")
+        config.jdbcUrl = GlobalConfig.DB_URL
+        config.username = GlobalConfig.USER_NAME
+        config.password = GlobalConfig.PASSWORD
         config.driverClassName = "org.postgresql.Driver"
         config.addDataSourceProperty("dataSource.ssl", "true")
         config.addDataSourceProperty("dataSource.sslfactory", "org.postgresql.ssl.NonValidatingFactory")

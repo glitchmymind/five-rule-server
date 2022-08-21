@@ -6,14 +6,14 @@ import com.fiverules.db.models.Users
 import com.fiverules.models.FeedDTO
 import com.fiverules.models.getEmptyRule
 import com.fiverules.models.getEmptyUser
-import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
-object FeedInteractor {
+class FeedInteractor {
 
     suspend fun getAllFeeds(call: ApplicationCall) {
         val feeds = transaction {

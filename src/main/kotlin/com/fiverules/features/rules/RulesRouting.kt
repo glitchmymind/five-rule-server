@@ -2,35 +2,38 @@ package com.fiverules.features.rules
 
 import com.fiverules.db.models.Rules
 import com.fiverules.db.models.Tasks
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.koin.ktor.ext.inject
 
 fun Route.rulesRouting() {
 
+    val rulesInteractor: RulesInteractor by inject()
+
     route("/create") {
         post("/rule") {
-            RulesInteractor.createNewRule(call)
+            rulesInteractor.createNewRule(call)
         }
 
         post("/task") {
-            RulesInteractor.createNewTask(call)
+            rulesInteractor.createNewTask(call)
         }
     }
 
     route("/delete") {
         post("/rule") {
-            RulesInteractor.deleteRule(call)
+            rulesInteractor.deleteRule(call)
         }
 
         post("/task") {
-            RulesInteractor.deleteTask(call)
+            rulesInteractor.deleteTask(call)
         }
     }
 
     post("attach/task") {
-        RulesInteractor.addTasksToRule(call)
+        rulesInteractor.addTasksToRule(call)
     }
 
     get("/rules") {

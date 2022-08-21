@@ -5,13 +5,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserDTO(
     val id: Long,
-    val login: String,
-    val password: String,
-    val name: String,
-    val email: String,
+    val login: String?,
+    val password: String?,
+    val phoneNumber: String?,
+    val name: String?,
+    val email: String?,
     val avatar: String?,
     val rating: Int,
-    val token: String, // JWT?
+    val isBlocked: Boolean,
 )
 
 fun getEmptyUser(): UserDTO {
@@ -19,11 +20,12 @@ fun getEmptyUser(): UserDTO {
         id = -1,
         login = "unknown",
         password = "",
+        phoneNumber = "",
         name = "unknown",
         email = "unknown",
         avatar = "",
         rating = 0,
-        token = "",
+        isBlocked = false,
     )
 }
 
