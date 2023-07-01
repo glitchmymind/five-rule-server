@@ -35,7 +35,11 @@ object DbSettings {
     }
 
     private fun postgresSource(): DataSource {
-        val config = HikariConfig(dbTestProperties)
+        val config = HikariConfig()
+        config.jdbcUrl = System.getenv("DB_URL")
+        config.username = System.getenv("USER_NAME")
+        config.password = System.getenv("PASSWORD")
+        config.driverClassName = "org.postgresql.Driver"
         return HikariDataSource(config)
     }
 
