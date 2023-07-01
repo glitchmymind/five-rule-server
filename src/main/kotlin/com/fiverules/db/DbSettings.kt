@@ -40,6 +40,7 @@ object DbSettings {
         config.username = System.getenv("USER_NAME")
         config.password = System.getenv("PASSWORD")
         config.driverClassName = "org.postgresql.Driver"
+        config.dataSource
         return HikariDataSource(config)
     }
 
