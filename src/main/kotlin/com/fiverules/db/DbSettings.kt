@@ -40,6 +40,8 @@ object DbSettings {
         config.username = System.getenv("USER_NAME")
         config.password = System.getenv("PASSWORD")
         config.driverClassName = "org.postgresql.Driver"
+        config.addDataSourceProperty("dataSource.ssl", "true")
+        config.addDataSourceProperty("dataSource.sslfactory", "org.postgresql.ssl.NonValidatingFactory")
         config.dataSource
         return HikariDataSource(config)
     }
