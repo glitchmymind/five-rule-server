@@ -21,15 +21,25 @@ dependencies {
     // Connection
     implementation(deps.ktor.server.core)
     implementation(deps.ktor.gson)
+    implementation(deps.ktor.negotiation)
     implementation(deps.ktor.serialization)
     implementation(deps.ktor.server.netty)
     implementation(deps.ktor.locations)
+    implementation(deps.ktor.session)
+    implementation(deps.ktor.auth)
+    implementation(deps.ktor.jwt)
+    implementation(deps.ktor.headers)
     implementation(deps.logback)
+
+    implementation(deps.ktor.client.core)
+    implementation(deps.ktor.client.cio)
+    implementation(deps.ktor.client.logging)
 
     // DB
     implementation(deps.exposed.core)
     implementation(deps.exposed.dao)
     implementation(deps.exposed.jdbc)
+    implementation(deps.exposed.time)
 
     implementation(deps.mysql.connector)
 
@@ -42,6 +52,9 @@ dependencies {
 //    testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
 //    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 
+    // DI
+    implementation(deps.koin)
+    implementation(deps.koinlogger)
 }
 
 tasks {
